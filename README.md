@@ -1,6 +1,7 @@
-## Deployment CI/CD pipeline
+## Deployment CI/CD pipeline (Docker & GitHub Actions)
 
-![image.png](image.png)
+
+<img src="image.png" height="468" width="468">
 
 
 ### Part 1 - GitHub workflow pipeline
