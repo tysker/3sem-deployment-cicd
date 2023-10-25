@@ -1,6 +1,6 @@
 ## Deployment CI/CD pipeline
 
-![image.png](..%2F..%2F..%2F..%2FDownloads%2Fimage.png)
+![image.png](image.png)
 
 
 ### Part 1 - GitHub workflow pipeline
