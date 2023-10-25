@@ -1,0 +1,39 @@
+version: '3.9'
+
+services:
+  api:
+    image: <DOCKER_HUB_USERNAME>/<IMAGE_NAME>:<IMAGE_TAG>
+    container_name: app
+    environment:
+      CONNECTION_STR: ${CONNECTION_STR}
+      DB_USERNAME: ${DB_PASSWORD}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DEPLOYED: ${DEPLOYED}
+      SECRET_KEY: ${SECRET_KEY}
+      TOKEN_EXPIRE_TIME: ${TOKEN_EXPIRE_TIME}
+      ISSUER: ${ISSUER}
+    ports:
+      - "7070:7070"
+    networks:
+      - database_network
+
+  db:
+    image: postgres:15.3-alpine3.18
+    container_name: db
+    restart: unless-stopped
+    networks:
+      - database_network
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./db-data:/var/lib/postgresql/data/
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+
+networks:
+  database_network:
+    name: database_network
+    internal: false
+    driver: bridge
