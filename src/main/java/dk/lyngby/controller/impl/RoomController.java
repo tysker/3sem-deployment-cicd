@@ -11,6 +11,7 @@ import dk.lyngby.model.Hotel;
 import dk.lyngby.model.Room;
 import io.javalin.http.Context;
 import jakarta.persistence.EntityManagerFactory;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.List;
@@ -30,7 +31,7 @@ public class RoomController implements IController<Room, Integer> {
     @Override
     public void read(Context ctx) {
         // request
-        int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
+        int id = getId(ctx);
 
         // entity
         Room room = dao.read(id);
@@ -45,7 +46,7 @@ public class RoomController implements IController<Room, Integer> {
     @Override
     public void readAll(Context ctx) {
 
-        int hotelId = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
+        int hotelId = getId(ctx);
 
         Map<String, List<String>> queryParamMap = ctx.queryParamMap();
 
@@ -77,7 +78,7 @@ public class RoomController implements IController<Room, Integer> {
         // request
         Room jsonRequest = validateEntity(ctx);
 
-        int hotelId = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
+        int hotelId = getId(ctx);
         Boolean hasRoom = validateHotelRoomNumber.apply(jsonRequest.getRoomNumber(), hotelId);
 
         if (hasRoom) {
@@ -98,7 +99,7 @@ public class RoomController implements IController<Room, Integer> {
     @Override
     public void update(Context ctx) {
         // request
-        int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
+        int id = getId(ctx);
         // entity
         Room update = dao.update(id, validateEntity(ctx));
         // dto
@@ -111,11 +112,16 @@ public class RoomController implements IController<Room, Integer> {
     @Override
     public void delete(Context ctx) {
         // request
-        int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
+        int id = getId(ctx);
         // entity
         dao.delete(id);
         // response
         ctx.res().setStatus(204);
+    }
+
+    @NotNull
+    private Integer getId(Context ctx) {
+        return ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
     }
 
     @Override

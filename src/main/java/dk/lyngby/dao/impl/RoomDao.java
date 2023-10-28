@@ -101,7 +101,7 @@ public class RoomDao implements dk.lyngby.dao.IDao<Room, Integer> {
         }
     }
 
-    public Function<Integer, Boolean> validateHotelRoomNumber = (roomNumber) -> {
+    public Function<Integer, Boolean> validateRoomNumber = (roomNumber) -> {
         try (var em = emf.createEntityManager()) {
             var room = em.find(Room.class, roomNumber);
             return room != null;

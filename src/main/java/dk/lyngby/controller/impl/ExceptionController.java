@@ -17,15 +17,16 @@ import java.util.List;
 import java.util.Map;
 
 public class ExceptionController {
-    private final Logger LOGGER = LoggerFactory.getLogger(Routes.class);
+    private final Logger logger = LoggerFactory.getLogger(Routes.class);
+
     public void exceptionHandlerNotAuthorized(AuthorizationException e, Context ctx) {
-        LOGGER.error(ctx.attribute("requestInfo") + " " + ctx.res().getStatus() + " " + e.getMessage());
+        logger.error(getRequestInfo(e, ctx));
         ctx.status(e.getStatusCode());
         ctx.json(new Message(e.getStatusCode(), e.getMessage()));
     }
 
     public void validationExceptionHandler(ValidationException e, Context ctx) {
-        LOGGER.error(ctx.attribute("requestInfo") + " " + ctx.res().getStatus() + " " + ctx.body());
+        logger.error(getRequestInfo(e, ctx));
 
         Map<String, List<ValidationError<Object>>> errors = e.getErrors();
         List<ValidationError<Object>> errorList = new ArrayList<>();
@@ -50,20 +51,24 @@ public class ExceptionController {
     }
 
     public void constraintViolationExceptionHandler(ConstraintViolationException e, Context ctx) {
-        LOGGER.error(ctx.attribute("requestInfo") + " " + ctx.res().getStatus() + " " + ctx.body());
+        logger.error(getRequestInfo(e, ctx));
         ctx.status(500);
         ctx.json(new Message(e.getErrorCode(), e.getSQLException().getMessage()));
     }
 
     public void apiExceptionHandler(ApiException e, Context ctx) {
-        LOGGER.error(ctx.attribute("requestInfo") + " " + ctx.res().getStatus() + " " + e.getMessage());
+        logger.error(ctx.attribute("requestInfo") + " " + ctx.res().getStatus() + " " + e.getMessage());
         ctx.status(e.getStatusCode());
         ctx.json(new Message(e.getStatusCode(), e.getMessage()));
     }
 
     public void exceptionHandler(Exception e, Context ctx) {
-        LOGGER.error(ctx.attribute("requestInfo") + " " + ctx.res().getStatus() + " " + e.getMessage());
+        logger.error(getRequestInfo(e, ctx));
         ctx.status(500);
         ctx.json(new Message(500, e.getMessage()));
+    }
+
+    private String getRequestInfo(Exception e, Context ctx) {
+        return ctx.attribute("requestInfo") + " " + ctx.res().getStatus() + " " + e.getMessage();
     }
 }

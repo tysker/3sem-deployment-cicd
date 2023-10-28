@@ -22,7 +22,7 @@ public class Routes {
     private final RoomRoute roomRoute = new RoomRoute();
     private final AuthRoutes authRoutes = new AuthRoutes();
 
-    private final Logger LOGGER = LoggerFactory.getLogger(Routes.class);
+    private final Logger logger = LoggerFactory.getLogger(Routes.class);
 
     private void requestInfoHandler(Context ctx) {
         String requestInfo = ctx.req().getMethod() + " " + ctx.req().getRequestURI();
@@ -39,7 +39,7 @@ public class Routes {
                 path("/", roomRoute.getRoutes());
             });
 
-            app.after(ctx -> LOGGER.info(" Request {} - {} was handled with status code {}", count++, ctx.attribute("requestInfo"), ctx.status()));
+            app.after(ctx -> logger.info(" Request {} - {} was handled with status code {}", count++, ctx.attribute("requestInfo"), ctx.status()));
 
             app.exception(ConstraintViolationException.class, exceptionController::constraintViolationExceptionHandler);
             app.exception(ValidationException.class, exceptionController::validationExceptionHandler);

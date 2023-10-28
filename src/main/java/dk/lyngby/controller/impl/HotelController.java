@@ -7,6 +7,7 @@ import dk.lyngby.dto.HotelDto;
 import dk.lyngby.model.Hotel;
 import io.javalin.http.Context;
 import jakarta.persistence.EntityManagerFactory;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class HotelController implements IController<Hotel, Integer> {
     @Override
     public void read(Context ctx)  {
         // request
-        int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
+        int id = getId(ctx);
         // entity
         Hotel hotel = dao.read(id);
         // dto
@@ -59,7 +60,7 @@ public class HotelController implements IController<Hotel, Integer> {
     @Override
     public void update(Context ctx) {
         // request
-        int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
+        int id = getId(ctx);
         // entity
         Hotel update = dao.update(id, validateEntity(ctx));
         // dto
@@ -72,11 +73,16 @@ public class HotelController implements IController<Hotel, Integer> {
     @Override
     public void delete(Context ctx) {
         // request
-        int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
+        int id = getId(ctx);
         // entity
         dao.delete(id);
         // response
         ctx.res().setStatus(204);
+    }
+
+    @NotNull
+    private Integer getId(Context ctx) {
+        return ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
     }
 
     @Override

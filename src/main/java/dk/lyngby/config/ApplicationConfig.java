@@ -17,7 +17,7 @@ import java.util.Properties;
 public class ApplicationConfig {
 
     private static final AccessManagerController ACCESS_MANAGER_HANDLER = new AccessManagerController();
-    private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationConfig.class);
+    private static final Logger logger = LoggerFactory.getLogger(ApplicationConfig.class);
 
     private static void configuration(JavalinConfig config) {
         config.routing.contextPath = "/api/v1"; // base path for all routes
@@ -46,7 +46,7 @@ public class ApplicationConfig {
             prop.load(is);
             return prop.getProperty(propName);
         } catch (IOException ex) {
-            LOGGER.error("Could not read property from pom file. Build Maven!");
+            logger.error("Could not read property from pom file. Build Maven!");
             throw new IOException("Could not read property from pom file. Build Maven!");
         }
     }

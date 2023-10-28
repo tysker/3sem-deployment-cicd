@@ -19,7 +19,7 @@ import java.util.Properties;
 @NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
 public class HibernateConfig {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(HibernateConfig.class);
+    private final static Logger logger = LoggerFactory.getLogger(HibernateConfig.class);
     private static EntityManagerFactory entityManagerFactory;
     private static Boolean isTest = false;
 
@@ -30,9 +30,9 @@ public class HibernateConfig {
             hibernateDevelopmentConfiguration(props);
             hibernateBasicConfiguration(props);
             return getEntityManagerFactory(configuration, props);
-        } catch (Throwable ex) {
-            LOGGER.error("Initial EntityManagerFactory creation for development failed." + ex);
-            throw new ExceptionInInitializerError(ex);
+        } catch (Throwable th) {
+            logger.error("Initial EntityManagerFactory creation for development failed.", th);
+            throw new ExceptionInInitializerError(th);
         }
     }
 
@@ -43,9 +43,9 @@ public class HibernateConfig {
             hibernateIsDeployedConfiguration(props);
             hibernateBasicConfiguration(props);
             return getEntityManagerFactory(configuration, props);
-        } catch (Throwable ex) {
-            LOGGER.error("Initial EntityManagerFactory creation for deployment failed." + ex);
-            throw new ExceptionInInitializerError(ex);
+        } catch (Throwable th) {
+            logger.error("Initial EntityManagerFactory creation for deployment failed.", th);
+            throw new ExceptionInInitializerError(th);
         }
     }
 
@@ -62,9 +62,9 @@ public class HibernateConfig {
             props.put("hibernate.show_sql", "true");
             props.put("hibernate.hbm2ddl.auto", "create-drop");
             return getEntityManagerFactory(configuration, props);
-        } catch (Throwable ex) {
-            LOGGER.error("Initial EntityManagerFactory creation for testing failed." + ex);
-            throw new ExceptionInInitializerError(ex);
+        } catch (Throwable th) {
+            logger.error("Initial EntityManagerFactory creation for testing failed. %s", th);
+            throw new ExceptionInInitializerError(th);
         }
     }
 
