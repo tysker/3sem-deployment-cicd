@@ -1,7 +1,7 @@
 package lyngby.dao.impl;
 
 import dk.lyngby.config.HibernateConfig;
-import dk.lyngby.config.Populate;
+import dk.lyngby.util.PopulateData;
 import dk.lyngby.dao.impl.RoomDao;
 import dk.lyngby.model.Hotel;
 import dk.lyngby.model.Room;
@@ -31,7 +31,7 @@ class RoomDaoTest {
 
     @BeforeEach
     void setUp() {
-        rooms = Populate.populateData(emfTest);
+        rooms = PopulateData.populateData(emfTest);
     }
 
     @AfterAll

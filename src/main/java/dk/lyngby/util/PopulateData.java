@@ -1,6 +1,7 @@
-package dk.lyngby.config;
+package dk.lyngby.util;
 
 
+import dk.lyngby.config.HibernateConfig;
 import dk.lyngby.model.Hotel;
 import dk.lyngby.model.Room;
 import jakarta.persistence.EntityManagerFactory;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class Populate {
+public class PopulateData {
     public static void main(String[] args) {
 
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();

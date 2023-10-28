@@ -1,7 +1,7 @@
 package lyngby.dao.impl;
 
 import dk.lyngby.config.HibernateConfig;
-import dk.lyngby.config.Populate;
+import dk.lyngby.util.PopulateData;
 import dk.lyngby.dao.impl.HotelDao;
 import dk.lyngby.model.Hotel;
 import jakarta.persistence.EntityManagerFactory;
@@ -29,7 +29,7 @@ class HotelDaoTest {
 
     @BeforeEach
     void setUp() {
-        Populate.populateData(emfTest);
+        PopulateData.populateData(emfTest);
     }
 
     @AfterAll

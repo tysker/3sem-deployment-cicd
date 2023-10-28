@@ -2,7 +2,7 @@ package lyngby.controller.impl;
 
 import dk.lyngby.config.ApplicationConfig;
 import dk.lyngby.config.HibernateConfig;
-import dk.lyngby.config.Populate;
+import dk.lyngby.util.PopulateData;
 import dk.lyngby.dto.HotelDto;
 import dk.lyngby.exception.Message;
 import dk.lyngby.exception.ValidationMessage;
@@ -47,7 +47,7 @@ class HotelControllerTest {
 
     @BeforeEach
     void setUp() {
-        Populate.populateData(emfTest);
+        PopulateData.populateData(emfTest);
     }
 
     @AfterAll

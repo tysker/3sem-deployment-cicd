@@ -2,7 +2,7 @@ package lyngby.controller.impl;
 
 import dk.lyngby.config.ApplicationConfig;
 import dk.lyngby.config.HibernateConfig;
-import dk.lyngby.config.Populate;
+import dk.lyngby.util.PopulateData;
 import dk.lyngby.dto.HotelDto;
 import dk.lyngby.dto.RoomDto;
 import dk.lyngby.model.Room;
@@ -43,7 +43,7 @@ class RoomControllerTest {
 
     @BeforeEach
     void setUp() {
-        Populate.populateData(emfTest);
+        PopulateData.populateData(emfTest);
     }
 
     @AfterAll
