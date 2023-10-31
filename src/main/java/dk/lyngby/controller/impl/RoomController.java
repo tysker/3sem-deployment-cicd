@@ -24,7 +24,7 @@ public class RoomController implements IController<Room, Integer> {
     private RoomDao dao;
 
     public RoomController() {
-        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
+        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory(false);
         this.dao = RoomDao.getInstance(emf);
     }
 

@@ -32,8 +32,7 @@ class HotelControllerTest {
     static void beforeAll() {
 
         // Setup test database
-        HibernateConfig.setTest(true);
-        emfTest = HibernateConfig.getEntityManagerFactory();
+        emfTest = HibernateConfig.getEntityManagerFactory(true);
         TestUtility.createUserTestData(emfTest);
 
         // Start server
@@ -52,7 +51,6 @@ class HotelControllerTest {
 
     @AfterAll
     static void tearDown() {
-        HibernateConfig.setTest(false);
         ApplicationConfig.stopServer(app);
     }
 

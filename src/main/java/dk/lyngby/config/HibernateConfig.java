@@ -1,8 +1,6 @@
 package dk.lyngby.config;
 
-import dk.lyngby.model.Hotel;
 import dk.lyngby.model.Role;
-import dk.lyngby.model.Room;
 import dk.lyngby.model.User;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.NoArgsConstructor;
@@ -10,8 +8,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -19,37 +15,55 @@ import java.util.Properties;
 @NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
 public class HibernateConfig {
 
-    private final static Logger logger = LoggerFactory.getLogger(HibernateConfig.class);
     private static EntityManagerFactory entityManagerFactory;
-    private static Boolean isTest = false;
 
-    private static EntityManagerFactory setupHibernateConfigurationDevelopment() {
+    public static EntityManagerFactory getEntityManagerFactory(boolean isTest) {
+        if (isTest) return getEntityManagerFactoryConfigTest();
+        boolean isDeployed = (System.getenv("DEPLOYED") != null);
+        if (isDeployed) return getEntityManagerFactoryConfigIsDeployed();
+        return getEntityManagerFactoryConfigDevelopment();
+    }
+
+    private static EntityManagerFactory getEntityManagerFactoryConfigDevelopment() {
+        if (entityManagerFactory == null) entityManagerFactory = setupHibernateConfigurationForDevelopment();
+        return entityManagerFactory;
+    }
+
+    private static EntityManagerFactory getEntityManagerFactoryConfigTest() {
+        if (entityManagerFactory == null) entityManagerFactory = setupHibernateConfigurationForTesting();
+        return entityManagerFactory;
+    }
+
+    private static EntityManagerFactory getEntityManagerFactoryConfigIsDeployed() {
+        if (entityManagerFactory == null) entityManagerFactory = setupHibernateConfigurationForDeployment();
+        return entityManagerFactory;
+    }
+
+    private static EntityManagerFactory setupHibernateConfigurationForDevelopment() {
         try {
             Configuration configuration = new Configuration();
             Properties props = new Properties();
             hibernateDevelopmentConfiguration(props);
             hibernateBasicConfiguration(props);
             return getEntityManagerFactory(configuration, props);
-        } catch (Throwable th) {
-            logger.error("Initial EntityManagerFactory creation for development failed.", th);
-            throw new ExceptionInInitializerError(th);
+        } catch (Throwable ex) {
+            throw new ExceptionInInitializerError(ex);
         }
     }
 
-    private static EntityManagerFactory setupHibernateConfigurationIsDeployed() {
+    private static EntityManagerFactory setupHibernateConfigurationForDeployment() {
         try {
             Configuration configuration = new Configuration();
             Properties props = new Properties();
             hibernateIsDeployedConfiguration(props);
             hibernateBasicConfiguration(props);
             return getEntityManagerFactory(configuration, props);
-        } catch (Throwable th) {
-            logger.error("Initial EntityManagerFactory creation for deployment failed.", th);
-            throw new ExceptionInInitializerError(th);
+        } catch (Throwable ex) {
+            throw new ExceptionInInitializerError(ex);
         }
     }
 
-    private static EntityManagerFactory setupHibernateConfigurationTest() {
+    private static EntityManagerFactory setupHibernateConfigurationForTesting() {
         try {
             Configuration configuration = new Configuration();
             Properties props = new Properties();
@@ -62,9 +76,9 @@ public class HibernateConfig {
             props.put("hibernate.show_sql", "true");
             props.put("hibernate.hbm2ddl.auto", "create-drop");
             return getEntityManagerFactory(configuration, props);
-        } catch (Throwable th) {
-            logger.error("Initial EntityManagerFactory creation for testing failed. %s", th);
-            throw new ExceptionInInitializerError(th);
+        } catch (Throwable ex) {
+            System.err.println("Initial SessionFactory creation failed." + ex);
+            throw new ExceptionInInitializerError(ex);
         }
     }
 
@@ -102,41 +116,9 @@ public class HibernateConfig {
         return sf.unwrap(EntityManagerFactory.class);
     }
 
-
     private static void getAnnotationConfiguration(Configuration configuration) {
-        configuration.addAnnotatedClass(Hotel.class);
-        configuration.addAnnotatedClass(Room.class);
         configuration.addAnnotatedClass(User.class);
         configuration.addAnnotatedClass(Role.class);
     }
 
-    private static EntityManagerFactory getEntityManagerFactoryConfigDevelopment() {
-        if (entityManagerFactory == null) entityManagerFactory = setupHibernateConfigurationDevelopment();
-        return entityManagerFactory;
-    }
-
-    private static EntityManagerFactory getEntityManagerFactoryConfigTest() {
-        if (entityManagerFactory == null) entityManagerFactory = setupHibernateConfigurationTest();
-        return entityManagerFactory;
-    }
-
-    private static EntityManagerFactory getEntityManagerFactoryConfigIsDeployed() {
-        if (entityManagerFactory == null) entityManagerFactory = setupHibernateConfigurationIsDeployed();
-        return entityManagerFactory;
-    }
-
-    public static EntityManagerFactory getEntityManagerFactory() {
-        boolean isDeployed = (System.getenv("DEPLOYED") != null);
-        if (isDeployed) return getEntityManagerFactoryConfigIsDeployed();
-        if (isTest) return getEntityManagerFactoryConfigTest();
-        return getEntityManagerFactoryConfigDevelopment();
-    }
-
-    public static void setTest(Boolean test) {
-        isTest = test;
-    }
-
-    public static Boolean getTest() {
-        return isTest;
-    }
 }

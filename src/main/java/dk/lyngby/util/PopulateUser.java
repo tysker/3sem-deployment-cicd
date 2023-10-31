@@ -12,7 +12,7 @@ import java.util.Set;
 public class PopulateUser {
     public static void main(String[] args)  {
 
-        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
+        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory(false);
         createUserTestData(emf);
     }
     public static void createUserTestData(EntityManagerFactory emf) {

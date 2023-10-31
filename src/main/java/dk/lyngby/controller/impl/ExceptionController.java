@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ExceptionController {
-    private final Logger logger = LoggerFactory.getLogger(Routes.class);
+    private final Logger logger = LoggerFactory.getLogger(ExceptionController.class);
 
     public void exceptionHandlerNotAuthorized(AuthorizationException e, Context ctx) {
         logger.error(getRequestInfo(e, ctx));

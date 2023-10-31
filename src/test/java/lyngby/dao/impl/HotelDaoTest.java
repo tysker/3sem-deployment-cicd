@@ -22,8 +22,7 @@ class HotelDaoTest {
 
     @BeforeAll
     static void setUpAll() {
-        HibernateConfig.setTest(true);
-        emfTest = HibernateConfig.getEntityManagerFactory();
+        emfTest = HibernateConfig.getEntityManagerFactory(true);
         hotelDao = HotelDao.getInstance(emfTest);
     }
 
@@ -32,10 +31,6 @@ class HotelDaoTest {
         PopulateData.populateData(emfTest);
     }
 
-    @AfterAll
-    static void tearDownAll() {
-        HibernateConfig.setTest(false);
-    }
 
     @Test
     void read() {

@@ -19,7 +19,7 @@ public class AuthController {
     private final TokenFactory tokenFactory = TokenFactory.getInstance();
 
     public AuthController() {
-        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
+        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory(false);
         authDao = AuthDao.getInstance(emf);
     }
 

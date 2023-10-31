@@ -24,19 +24,13 @@ class RoomDaoTest {
 
     @BeforeAll
     static void setUpAll() {
-        HibernateConfig.setTest(true);
-        emfTest = HibernateConfig.getEntityManagerFactory();
+        emfTest = HibernateConfig.getEntityManagerFactory(true);
         roomDao = RoomDao.getInstance(emfTest);
     }
 
     @BeforeEach
     void setUp() {
         rooms = PopulateData.populateData(emfTest);
-    }
-
-    @AfterAll
-    static void tearDownAll() {
-        HibernateConfig.setTest(false);
     }
 
 

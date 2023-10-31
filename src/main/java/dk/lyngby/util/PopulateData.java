@@ -15,7 +15,7 @@ import java.util.Set;
 public class PopulateData {
     public static void main(String[] args) {
 
-        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
+        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory(false);
         populateData(emf);
     }
 

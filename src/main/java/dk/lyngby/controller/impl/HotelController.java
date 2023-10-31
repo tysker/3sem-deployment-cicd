@@ -16,7 +16,7 @@ public class HotelController implements IController<Hotel, Integer> {
     private final HotelDao dao;
 
     public HotelController() {
-        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
+        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory(false);
         this.dao = HotelDao.getInstance(emf);
     }
 
